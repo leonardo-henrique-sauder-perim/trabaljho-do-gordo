@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarberShop - Controle</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-cut"></i> GRAGAS Barbearia</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-section="dashboard">Dashboard</a></li>
+                    <li><a href="#" data-section="agendamentos">Agendamentos</a></li>
+                    <li><a href="#" data-section="clientes">Clientes</a></li>
+                    <li><a href="#" data-section="servicos">Serviços</a></li>
+                    <li><a href="#" data-section="barbeiros">Barbeiros</a></li>
+                    <li><a href="#" data-section="financeiro">Financeiro</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <img src="Imagens/barbeariaGRAGAS.png" alt="logo do site">
+            <!-- Seção Dashboard -->
+            <section id="dashboard" class="section active">
+                <h2>Dashboard</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>Agendamentos Hoje</h3>
+                        <p id="agendamentos-hoje">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Clientes Cadastrados</h3>
+                        <p id="total-clientes">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Faturamento Mensal</h3>
+                        <p id="faturamento-mensal">R$ 0,00</p>
+                    </div>
+                </div>
+                <div class="agendamentos-hoje">
+                    <h3>Agendamentos de Hoje</h3>
+                    <table id="tabela-agendamentos-hoje">
+                        <thead>
+                            <tr>
+                                <th>Hora</th>
+                                <th>Cliente</th>
+                                <th>Serviço</th>
+                                <th>Barbeiro</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Preenchido por JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Seção Agendamentos -->
+            <section id="agendamentos" class="section">
+                <h2>Agendamentos</h2>
+                <div class="controls">
+                    <button id="novo-agendamento" class="btn-primary"><i class="fas fa-plus"></i> Novo Agendamento</button>
+                    <div class="filtros">
+                        <input type="date" id="filtro-data">
+                        <select id="filtro-barbeiro">
+                            <option value="">Todos Barbeiros</option>
+                        </select>
+                        <select id="filtro-status">
+                            <option value="">Todos Status</option>
+                            <option value="pendente">Pendente</option>
+                            <option value="confirmado">Confirmado</option>
+                            <option value="cancelado">Cancelado</option>
+                            <option value="finalizado">Finalizado</option>
+                        </select>
+                    </div>
+                </div>
+                <table id="tabela-agendamentos">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Cliente</th>
+                            <th>Serviço</th>
+                            <th>Barbeiro</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido por JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Seção Clientes -->
+            <section id="clientes" class="section">
+                <h2>Clientes</h2>
+                <div class="controls">
+                    <button id="novo-cliente" class="btn-primary"><i class="fas fa-plus"></i> Novo Cliente</button>
+                    <div class="search">
+                        <input type="text" id="busca-cliente" placeholder="Buscar cliente...">
+                        <button id="btn-busca-cliente"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <table id="tabela-clientes">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Agendamentos</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido por JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Seção Serviços -->
+            <section id="servicos" class="section">
+                <h2>Serviços</h2>
+                <div class="controls">
+                    <button id="novo-servico" class="btn-primary"><i class="fas fa-plus"></i> Novo Serviço</button>
+                    <div class="search">
+                        <input type="text" id="busca-servico" placeholder="Buscar serviço...">
+                        <button id="btn-busca-servico"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <table id="tabela-servicos">
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Duração (min)</th>
+                            <th>Preço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido por JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Seção Barbeiros -->
+            <section id="barbeiros" class="section">
+                <h2>Barbeiros</h2>
+                <div class="controls">
+                    <button id="novo-barbeiro" class="btn-primary"><i class="fas fa-plus"></i> Novo Barbeiro</button>
+                    <div class="search">
+                        <input type="text" id="busca-barbeiro" placeholder="Buscar barbeiro...">
+                        <button id="btn-busca-barbeiro"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <table id="tabela-barbeiros">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Especialidades</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido por JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Seção Financeiro -->
+            <section id="financeiro" class="section">
+                <h2>Financeiro</h2>
+                <div class="filtros-financeiro">
+                    <select id="mes-financeiro">
+                        <option value="1">Janeiro</option>
+                        <option value="2">Fevereiro</option>
+                        <option value="3">Março</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Maio</option>
+                        <option value="6">Junho</option>
+                        <option value="7">Julho</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select>
+                    <select id="ano-financeiro">
+                        <!-- Preenchido por JavaScript -->
+                    </select>
+                    <button id="gerar-relatorio" class="btn-primary">Gerar Relatório</button>
+                    <button id="exportar-relatorio" class="btn-secondary">Exportar CSV</button>
+                </div>
+                <div class="resumo-financeiro">
+                    <div class="resumo-card">
+                        <h3>Total Recebido</h3>
+                        <p id="total-recebido">R$ 0,00</p>
+                    </div>
+                    <div class="resumo-card">
+                        <h3>Serviço Mais Popular</h3>
+                        <p id="servico-popular">-</p>
+                    </div>
+                    <div class="resumo-card">
+                        <h3>Barbeiro Mais Ativo</h3>
+                        <p id="barbeiro-ativo">-</p>
+                    </div>
+                </div>
+                <div class="graficos">
+                    <canvas id="grafico-financeiro" width="400" height="200"></canvas>
+                </div>
+                <div class="tabela-relatorio">
+                    <h3>Detalhes do Relatório</h3>
+                    <table id="tabela-financeiro">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Cliente</th>
+                                <th>Serviço</th>
+                                <th>Barbeiro</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Preenchido por JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modais -->
+        <div id="modal-container" class="modal-container">
+            <!-- Modal de Agendamento -->
+            <div id="modal-agendamento" class="modal">
+                <h3><span id="modal-agendamento-titulo">Novo</span> Agendamento</h3>
+                <form id="form-agendamento">
+                    <input type="hidden" id="agendamento-id">
+                    <div class="form-group">
+                        <label for="agendamento-cliente">Cliente *</label>
+                        <select id="agendamento-cliente" required>
+                            <option value="">Selecione um cliente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendamento-servico">Serviço *</label>
+                        <select id="agendamento-servico" required>
+                            <option value="">Selecione um serviço</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendamento-barbeiro">Barbeiro *</label>
+                        <select id="agendamento-barbeiro" required>
+                            <option value="">Selecione um barbeiro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendamento-data">Data *</label>
+                        <input type="date" id="agendamento-data" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendamento-hora">Hora *</label>
+                        <input type="time" id="agendamento-hora" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendamento-status">Status *</label>
+                        <select id="agendamento-status" required>
+                            <option value="pendente">Pendente</option>
+                            <option value="confirmado">Confirmado</option>
+                            <option value="cancelado">Cancelado</option>
+                            <option value="finalizado">Finalizado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendamento-observacoes">Observações</label>
+                        <textarea id="agendamento-observacoes" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelar-agendamento">Cancelar</button>
+                        <button type="submit" class="btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal de Cliente -->
+            <div id="modal-cliente" class="modal">
+                <h3><span id="modal-cliente-titulo">Novo</span> Cliente</h3>
+                <form id="form-cliente">
+                    <input type="hidden" id="cliente-id">
+                    <div class="form-group">
+                        <label for="cliente-nome">Nome *</label>
+                        <input type="text" id="cliente-nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente-telefone">Telefone *</label>
+                        <input type="tel" id="cliente-telefone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente-email">Email</label>
+                        <input type="email" id="cliente-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente-data-nascimento">Data de Nascimento</label>
+                        <input type="date" id="cliente-data-nascimento">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelar-cliente">Cancelar</button>
+                        <button type="submit" class="btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal de Serviço -->
+            <div id="modal-servico" class="modal">
+                <h3><span id="modal-servico-titulo">Novo</span> Serviço</h3>
+                <form id="form-servico">
+                    <input type="hidden" id="servico-id">
+                    <div class="form-group">
+                        <label for="servico-nome">Nome *</label>
+                        <input type="text" id="servico-nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servico-duracao">Duração (minutos) *</label>
+                        <input type="number" id="servico-duracao" min="5" step="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servico-preco">Preço *</label>
+                        <input type="number" id="servico-preco" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servico-descricao">Descrição</label>
+                        <textarea id="servico-descricao" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelar-servico">Cancelar</button>
+                        <button type="submit" class="btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal de Barbeiro -->
+            <div id="modal-barbeiro" class="modal">
+                <h3><span id="modal-barbeiro-titulo">Novo</span> Barbeiro</h3>
+                <form id="form-barbeiro">
+                    <input type="hidden" id="barbeiro-id">
+                    <div class="form-group">
+                        <label for="barbeiro-nome">Nome *</label>
+                        <input type="text" id="barbeiro-nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="barbeiro-telefone">Telefone *</label>
+                        <input type="tel" id="barbeiro-telefone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="barbeiro-email">Email</label>
+                        <input type="email" id="barbeiro-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="barbeiro-especialidades">Especialidades *</label>
+                        <select id="barbeiro-especialidades" multiple required>
+                            <!-- Preenchido por JavaScript -->
+                        </select>
+                        <small>Segure Ctrl para selecionar múltiplas opções</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="barbeiro-status">Status *</label>
+                        <select id="barbeiro-status" required>
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                            <option value="ferias">Férias</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelar-barbeiro">Cancelar</button>
+                        <button type="submit" class="btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal de Confirmação -->
+            <div id="modal-confirmacao" class="modal">
+                <h3 id="modal-confirmacao-titulo">Confirmar ação</h3>
+                <p id="modal-confirmacao-mensagem">Tem certeza que deseja realizar esta ação?</p>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelar-acao">Cancelar</button>
+                    <button type="button" class="btn-primary" id="confirmar-acao">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+
+    <footer>
+        <div class="footer-container">
+          <div class="footer-col">
+            <h3>GRAGAS Barbearia</h3>
+            <p>Estilo, tradição e cuidado em cada corte. Atendimento profissional no coração da cidade.</p>
+          </div>
+          <div class="footer-col">
+            <h3>Contato</h3>
+            <p>📍 Rua dos Cortes, 123 - Centro</p>
+            <p>📞 (11) 91234-5678</p>
+            <p>🕘 Seg a Sáb: 09h às 19h</p>
+          </div>
+          <div class="footer-col">
+            <h3>Redes Sociais</h3>
+            <div class="social-icons">
+              <a href="https://www.instagram.com/suabarbearia" target="_blank"><i class="fab fa-instagram"></i></a>
+              <a href="https://wa.me/5511912345678" target="_blank"><i class="fab fa-whatsapp"></i></a>
+              <a href="https://facebook.com/suabarbearia" target="_blank"><i class="fab fa-facebook"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © 2025 GRAGAS Barbearia. Todos os direitos reservados.
+        </div>
+      </footer>      
+</body>
+</html>
