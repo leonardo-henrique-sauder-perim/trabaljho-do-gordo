@@ -1067,5 +1067,113 @@ function populateAgendamentoSelects() {
         selectBarbeiro.appendChild(option);
     });
 }
+ // Classe para representar um serviço da barbearia
+class Servico {
+    constructor(descricao, quantidade, preco, barbeiro) {
+        this.descricao = descricao;
+        this.quantidade = quantidade;
+        this.preco = preco;
+        this.barbeiro = barbeiro;
+    }
 
+    getTotal() {
+        return this.quantidade * this.preco;
+    }
+}
+
+// Função para formatar números como moeda (R$)
+function formatarMoeda(valor) {
+    return 'R$' + valor.toFixed(2).replace('.', ',');
+}
+
+// Função principal para gerar o relatório
+function gerarRelatorioBarbearia() {
+    // Dados da barbearia
+    const titulo = "RELATÓRIO DIÁRIO - BARBEARIA GRAGAS";
+    const slogan = "Onde o estilo encontra a tradição!";
+    const endereco = "Av. dos Cortes, 123 - Centro";
+    const telefone = "(11) 98765-4321";
+    
+    // Serviços realizados no dia
+    const servicos = [
+        new Servico("Corte Social", 15, 35.00, "João"),
+        new Servico("Barba Completa", 8, 25.00, "Carlos"),
+        new Servico("Corte + Barba", 12, 55.00, "Miguel"),
+        new Servico("Pézinho", 5, 15.00, "João"),
+        new Servico("Sobrancelha", 7, 10.00, "Carlos")
+    ];
+
+    // Gerar o conteúdo do relatório
+    let relatorio = "";
+    
+    // Cabeçalho
+    relatorio += "✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️\n";
+    relatorio += `           ${titulo}\n`;
+    relatorio += `       "${slogan}"\n`;
+    relatorio += "✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️\n\n";
+    
+    // Informações da barbearia
+    const dataAtual = new Date();
+    relatorio += `Endereço: ${endereco}\n`;
+    relatorio += `Telefone: ${telefone}\n`;
+    relatorio += `Data: ${dataAtual.toLocaleDateString('pt-BR')}\n`;
+    relatorio += `Hora da emissão: ${dataAtual.toLocaleTimeString('pt-BR')}\n`;
+    relatorio += "--------------------------------------------------\n\n";
+
+    // Tabela de serviços
+    relatorio += `${"SERVIÇO".padEnd(20)} ${"BARBEIRO".padEnd(10)} ${"QUANTIDADE".padEnd(10)} ${"PREÇO".padEnd(12)} ${"TOTAL".padEnd(12)}\n`;
+    
+    let totalGeral = 0;
+    servicos.forEach(servico => {
+        relatorio += `${servico.descricao.padEnd(20)} ${servico.barbeiro.padEnd(10)} ${servico.quantidade.toString().padEnd(10)} ${formatarMoeda(servico.preco).padEnd(12)} ${formatarMoeda(servico.getTotal()).padEnd(12)}\n`;
+        totalGeral += servico.getTotal();
+    });
+
+    // Resumo por barbeiro
+    relatorio += "\n👉 RESUMO POR BARBEIRO\n";
+    relatorio += "--------------------------------------------------\n";
+    
+    const totaisBarbeiros = {};
+    servicos.forEach(servico => {
+        if (!totaisBarbeiros[servico.barbeiro]) {
+            totaisBarbeiros[servico.barbeiro] = 0;
+        }
+        totaisBarbeiros[servico.barbeiro] += servico.getTotal();
+    });
+    
+    for (const [barbeiro, total] of Object.entries(totaisBarbeiros)) {
+        relatorio += `${barbeiro.padEnd(10)}: ${formatarMoeda(total)}\n`;
+    }
+
+    // Rodapé
+    relatorio += "\n--------------------------------------------------\n";
+    relatorio += `TOTAL GERAL DO DIA: ${formatarMoeda(totalGeral)}\n`;
+    relatorio += "✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️\n";
+    relatorio += "        Obrigado pela preferência! Volte sempre!\n";
+    relatorio += "✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️✂️\n";
+
+    return relatorio;
+}
+
+// Função para salvar o relatório em um arquivo (Node.js)
+function salvarRelatorio(conteudo) {
+    const fs = require('fs');
+    const dataAtual = new Date();
+    const nomeArquivo = `relatorio_gragas_${dataAtual.getDate()}${dataAtual.getMonth()+1}${dataAtual.getFullYear()}.txt`;
+    
+    fs.writeFile(nomeArquivo, conteudo, (err) => {
+        if (err) {
+            console.error("Erro ao salvar o relatório:", err);
+        } else {
+            console.log(`Relatório salvo com sucesso como: ${nomeArquivo}`);
+        }
+    });
+}
+
+// Execução principal
+const relatorio = gerarRelatorioBarbearia();
+console.log(relatorio);
+
+// Se estiver no Node.js, descomente a linha abaixo para salvar em arquivo
+// salvarRelatorio(relatorio);
 });

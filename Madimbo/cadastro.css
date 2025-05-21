@@ -18,6 +18,7 @@ body {
     position: absolute;
     height: 60px;
     width: auto;
+    background-color: white;
 }
 
 .top-left {
@@ -36,7 +37,7 @@ body {
     margin: 0 auto 20px auto;
     height: 250px;
     width: auto;
-    box-shadow: 0 4px 12px black;
+    box-shadow: 0 4px 12px white;
 
 }
 
@@ -112,7 +113,7 @@ footer img {
 .botao-estilizado {
   display: inline-block;
   padding: 12px 24px;
-  background: linear-gradient black;
+  background: linear-gradient white;
   color:black;
   font-size: 16px;
   font-weight: 600;
@@ -126,6 +127,6 @@ footer img {
 .botao-estilizado:hover {
   background: linear-gradient gray;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(9, 255, 0, 0.2);
+  box-shadow: 0 6px 16px white;
 }
 
