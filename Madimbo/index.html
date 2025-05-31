@@ -19,6 +19,7 @@
                     <li><a href="#" data-section="servicos">Serviços</a></li>
                     <li><a href="#" data-section="barbeiros">Barbeiros</a></li>
                     <li><a href="#" data-section="financeiro">Financeiro</a></li>
+                    <li><a href="#" data-section="historico">Histórico</a></li>
                 </ul>
             </nav>
         </header>
@@ -112,6 +113,7 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
+                            <th>CPF</th>
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Agendamentos</th>
@@ -138,7 +140,7 @@
                     <thead>
                         <tr>
                             <th>Serviço</th>
-                            <th>Duração (min)</th>
+                            <th>Duração</th>
                             <th>Preço</th>
                             <th>Ações</th>
                         </tr>
@@ -238,6 +240,75 @@
             </section>
         </main>
 
+        <!-- Seção Histórico -->
+        <section id="historico" class="section">
+            <h2>Histórico da Barbearia</h2>
+            <div style="overflow-x:auto; margin-bottom: 32px;">
+                <h3 style="margin-bottom: 8px;">Todos os Clientes</h3>
+                <table id="tabela-todos-clientes" style="width:100%; border-collapse:collapse; margin-bottom: 24px;">
+                    <thead>
+                        <tr style="background:#f5f5f5;">
+                            <th style="padding:10px;">Nome</th>
+                            <th style="padding:10px;">CPF</th>
+                            <th style="padding:10px;">RG</th>
+                            <th style="padding:10px;">Telefone</th>
+                            <th style="padding:10px;">Email</th>
+                            <th style="padding:10px;">Ver Histórico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="controls" style="display: flex; justify-content: center; margin-bottom: 32px;">
+                <div class="search" style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" id="busca-historico-cliente" placeholder="Buscar cliente por nome, CPF ou RG..." style="width: 300px; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                    <button id="btn-busca-historico-cliente" class="btn-primary"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div id="tabela-pesquisa-clientes-container" style="overflow-x:auto; display:none; margin-bottom: 32px;">
+                <h3 style="margin-bottom: 16px; margin-top: 0;">Resultado da Pesquisa</h3>
+                <table id="tabela-pesquisa-clientes" style="width:100%; border-collapse:collapse; margin-bottom: 24px;">
+                    <thead>
+                        <tr style="background:#f5f5f5;">
+                            <th style="padding:10px;">Nome</th>
+                            <th style="padding:10px;">CPF</th>
+                            <th style="padding:10px;">RG</th>
+                            <th style="padding:10px;">Telefone</th>
+                            <th style="padding:10px;">Email</th>
+                            <th style="padding:10px;">Ver Histórico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="painel-historico-cliente" style="display:none; margin-top:32px; background:#fafafa; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.07); padding:24px;">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <h3 style="margin:0;">Histórico do Cliente: <span id="nome-historico-cliente"></span></h3>
+                    <button id="fechar-historico-cliente" class="btn-secondary" style="margin-left:20px;">Fechar</button>
+                </div>
+                <table id="tabela-historico-agendamentos" style="width:100%; border-collapse:collapse; margin-top:18px;">
+                    <thead>
+                        <tr style="background:#f5f5f5;">
+                            <th style="padding:10px;">Data</th>
+                            <th style="padding:10px;">Hora</th>
+                            <th style="padding:10px;">Serviço</th>
+                            <th style="padding:10px;">Barbeiro</th>
+                            <th style="padding:10px;">Status</th>
+                            <th style="padding:10px;">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido por JavaScript -->
+                    </tbody>
+                </table>
+                <div id="mensagem-sem-historico" style="display:none; color:#b71c1c; margin-top:18px; text-align:center; font-weight:bold;">Nenhum agendamento finalizado encontrado para este cliente.</div>
+            </div>
+        </section>
+
         <!-- Modais -->
         <div id="modal-container" class="modal-container">
             <!-- Modal de Agendamento -->
@@ -296,9 +367,25 @@
                 <h3><span id="modal-cliente-titulo">Novo</span> Cliente</h3>
                 <form id="form-cliente">
                     <input type="hidden" id="cliente-id">
-                    <div class="form-group">
-                        <label for="cliente-nome">Nome *</label>
-                        <input type="text" id="cliente-nome" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cliente-nome">Nome *</label>
+                            <input type="text" id="cliente-nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cliente-cpf">CPF *</label>
+                            <input type="text" id="cliente-cpf" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cliente-rg">RG</label>
+                            <input type="text" id="cliente-rg">
+                        </div>
+                        <div class="form-group">
+                            <label for="cliente-data-nascimento">Data Nascimento</label>
+                            <input type="date" id="cliente-data-nascimento">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="cliente-telefone">Telefone *</label>
@@ -309,8 +396,18 @@
                         <input type="email" id="cliente-email">
                     </div>
                     <div class="form-group">
-                        <label for="cliente-data-nascimento">Data de Nascimento</label>
-                        <input type="date" id="cliente-data-nascimento">
+                        <label for="cliente-endereco">Endereço</label>
+                        <input type="text" id="cliente-endereco">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cliente-cidade">Cidade</label>
+                            <input type="text" id="cliente-cidade">
+                        </div>
+                        <div class="form-group">
+                            <label for="cliente-estado">Estado</label>
+                            <input type="text" id="cliente-estado">
+                        </div>
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" id="cancelar-cliente">Cancelar</button>
@@ -324,17 +421,34 @@
                 <h3><span id="modal-servico-titulo">Novo</span> Serviço</h3>
                 <form id="form-servico">
                     <input type="hidden" id="servico-id">
-                    <div class="form-group">
-                        <label for="servico-nome">Nome *</label>
-                        <input type="text" id="servico-nome" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="servico-codigo">Código</label>
+                            <input type="text" id="servico-codigo" placeholder="Gerado automaticamente">
+                        </div>
+                        <div class="form-group">
+                            <label for="servico-nome">Nome *</label>
+                            <input type="text" id="servico-nome" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="servico-duracao">Duração (min) *</label>
+                            <input type="number" id="servico-duracao" min="5" step="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="servico-preco">Preço (R$) *</label>
+                            <input type="number" id="servico-preco" min="0" step="0.01" required>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="servico-duracao">Duração (minutos) *</label>
-                        <input type="number" id="servico-duracao" min="5" step="5" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="servico-preco">Preço *</label>
-                        <input type="number" id="servico-preco" min="0" step="0.01" required>
+                        <label for="servico-categoria">Categoria</label>
+                        <select id="servico-categoria">
+                            <option value="corte">Corte</option>
+                            <option value="barba">Barba</option>
+                            <option value="combo">Combo</option>
+                            <option value="outros">Outros</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="servico-descricao">Descrição</label>
@@ -352,9 +466,19 @@
                 <h3><span id="modal-barbeiro-titulo">Novo</span> Barbeiro</h3>
                 <form id="form-barbeiro">
                     <input type="hidden" id="barbeiro-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="barbeiro-nome">Nome *</label>
+                            <input type="text" id="barbeiro-nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="barbeiro-cpf">CPF *</label>
+                            <input type="text" id="barbeiro-cpf" required>
+                        </div>
+                    </div>
                     <div class="form-group">
-                        <label for="barbeiro-nome">Nome *</label>
-                        <input type="text" id="barbeiro-nome" required>
+                        <label for="barbeiro-rg">RG</label>
+                        <input type="text" id="barbeiro-rg">
                     </div>
                     <div class="form-group">
                         <label for="barbeiro-telefone">Telefone *</label>
@@ -365,9 +489,22 @@
                         <input type="email" id="barbeiro-email">
                     </div>
                     <div class="form-group">
+                        <label for="barbeiro-endereco">Endereço</label>
+                        <input type="text" id="barbeiro-endereco">
+                    </div>
+                    <div class="form-group">
+                        <label for="barbeiro-data-nascimento">Data Nascimento</label>
+                        <input type="date" id="barbeiro-data-nascimento">
+                    </div>
+                    <div class="form-group">
                         <label for="barbeiro-especialidades">Especialidades *</label>
                         <select id="barbeiro-especialidades" multiple required>
-                            <!-- Preenchido por JavaScript -->
+                            <option value="Corte de Cabelo">Corte de Cabelo</option>
+                            <option value="Barba">Barba</option>
+                            <option value="Sobrancelha">Sobrancelha</option>
+                            <option value="Pézinho">Pézinho</option>
+                            <option value="Hidratação">Hidratação</option>
+                            <option value="Progressiva">Progressiva</option>
                         </select>
                         <small>Segure Ctrl para selecionar múltiplas opções</small>
                     </div>

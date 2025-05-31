@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupNavigation();
     setupModals();
     setupEventListeners();
+    // Garante que a tabela de clientes do histórico sempre aparece ao carregar a página
+    renderTabelaHistoricoClientes();
 
     // Funções de inicialização
     function initAnosFinanceiro() {
@@ -79,7 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 break;
                         }
                     }
-                });
+                // (Bloco de lixeira drag and drop removido - exclusão agora só via botão de lixeira nas tabelas)
+
+});
             });
         });
     }
@@ -239,10 +243,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const tbody = document.querySelector('#tabela-clientes tbody');
         tbody.innerHTML = clientes.map(cliente => {
             const agendamentosCliente = agendamentos.filter(a => a.clienteId === cliente.id).length;
-            
             return `
                 <tr>
                     <td>${cliente.nome}</td>
+                    <td>${cliente.cpf || 'N/A'}</td>
+                    <td>${cliente.rg || 'N/A'}</td>
                     <td>${formatPhone(cliente.telefone)}</td>
                     <td>${cliente.email || 'N/A'}</td>
                     <td>${agendamentosCliente}</td>
@@ -286,6 +291,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return `
                 <tr>
                     <td>${barbeiro.nome}</td>
+                    <td>${barbeiro.cpf || 'N/A'}</td>
+                    <td>${barbeiro.rg || 'N/A'}</td>
                     <td>${formatPhone(barbeiro.telefone)}</td>
                     <td>${barbeiro.email || 'N/A'}</td>
                     <td>${barbeiro.especialidades.join(', ')}</td>
@@ -531,13 +538,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const telefone = document.getElementById('cliente-telefone').value;
         const email = document.getElementById('cliente-email').value;
         const dataNascimento = document.getElementById('cliente-data-nascimento').value;
+        const cpf = document.getElementById('cliente-cpf') ? document.getElementById('cliente-cpf').value : '';
+        const rg = document.getElementById('cliente-rg') ? document.getElementById('cliente-rg').value : '';
         
         const cliente = {
             id: id || generateId(),
             nome,
             telefone,
             email,
-            dataNascimento
+            dataNascimento,
+            cpf,
+            rg
         };
         
         if (id) {
@@ -595,6 +606,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const especialidades = Array.from(document.getElementById('barbeiro-especialidades').selectedOptions)
             .map(option => option.value);
         const status = document.getElementById('barbeiro-status').value;
+        const cpf = document.getElementById('barbeiro-cpf') ? document.getElementById('barbeiro-cpf').value : '';
+        const rg = document.getElementById('barbeiro-rg') ? document.getElementById('barbeiro-rg').value : '';
         
         const barbeiro = {
             id: id || generateId(),
@@ -602,7 +615,9 @@ document.addEventListener('DOMContentLoaded', function() {
             telefone,
             email,
             especialidades,
-            status
+            status,
+            cpf,
+            rg
         };
         
         if (id) {
@@ -662,7 +677,24 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('btn-busca-cliente').addEventListener('click', searchClientes);
         document.getElementById('btn-busca-servico').addEventListener('click', searchServicos);
         document.getElementById('btn-busca-barbeiro').addEventListener('click', searchBarbeiros);
-        
+
+        // Histórico: busca e interação
+        document.getElementById('btn-busca-historico-cliente').addEventListener('click', renderTabelaHistoricoClientes);
+        document.getElementById('busca-historico-cliente').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') renderTabelaHistoricoClientes();
+            if (e.key === 'Backspace' || e.key === 'Delete' || e.key === ' ') {
+                if (this.value.trim() === '') renderTabelaHistoricoClientes();
+            }
+        });
+        document.getElementById('fechar-historico-cliente').addEventListener('click', function() {
+            document.getElementById('painel-historico-cliente').style.display = 'none';
+        });
+
+        // Sempre renderiza a tabela de clientes ao abrir a aba Histórico
+        document.querySelector('a[data-section="historico"]').addEventListener('click', function() {
+            setTimeout(renderTabelaHistoricoClientes, 100); // timeout para garantir que a aba está visível
+        });
+
         // Editar/Excluir via tabelas
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('edit') || e.target.closest('.edit')) {
@@ -678,7 +710,84 @@ document.addEventListener('DOMContentLoaded', function() {
                 const type = button.getAttribute('data-type');
                 confirmDelete(type, id);
             }
+            // Histórico: ver histórico do cliente
+            if (e.target.classList.contains('btn-ver-historico')) {
+                const id = e.target.getAttribute('data-id');
+                mostrarHistoricoCliente(id);
+            }
         });
+    }
+
+    // Renderiza as tabelas de clientes na aba Histórico
+    function renderTabelaHistoricoClientes() {
+        const termo = document.getElementById('busca-historico-cliente').value.toLowerCase();
+        const todosTbody = document.querySelector('#tabela-todos-clientes tbody');
+        const pesquisaContainer = document.getElementById('tabela-pesquisa-clientes-container');
+        const pesquisaTbody = document.querySelector('#tabela-pesquisa-clientes tbody');
+        // Tabela de todos os clientes (sempre visível)
+        let listaTodos = [...clientes];
+        listaTodos.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
+        todosTbody.innerHTML = listaTodos.map(cliente => `
+            <tr>
+                <td>${cliente.nome}</td>
+                <td>${cliente.cpf || 'N/A'}</td>
+                <td>${cliente.rg || 'N/A'}</td>
+                <td>${formatPhone(cliente.telefone)}</td>
+                <td>${cliente.email || 'N/A'}</td>
+                <td><button class="btn-primary btn-ver-historico" data-id="${cliente.id}">Ver Histórico</button></td>
+            </tr>
+        `).join('');
+        // Tabela de pesquisa (só aparece se houver termo)
+        if (termo) {
+            let listaPesquisa = listaTodos.filter(cliente =>
+                (cliente.nome && cliente.nome.toLowerCase().includes(termo)) ||
+                (cliente.cpf && cliente.cpf.toLowerCase().includes(termo)) ||
+                (cliente.rg && cliente.rg.toLowerCase().includes(termo))
+            );
+            pesquisaTbody.innerHTML = listaPesquisa.map(cliente => `
+                <tr>
+                    <td>${cliente.nome}</td>
+                    <td>${cliente.cpf || 'N/A'}</td>
+                    <td>${cliente.rg || 'N/A'}</td>
+                    <td>${formatPhone(cliente.telefone)}</td>
+                    <td>${cliente.email || 'N/A'}</td>
+                    <td><button class="btn-primary btn-ver-historico" data-id="${cliente.id}">Ver Histórico</button></td>
+                </tr>
+            `).join('');
+            pesquisaContainer.style.display = '';
+        } else {
+            pesquisaTbody.innerHTML = '';
+            pesquisaContainer.style.display = 'none';
+        }
+    }
+
+    // Mostra o painel de histórico do cliente
+    function mostrarHistoricoCliente(clienteId) {
+        const cliente = clientes.find(c => String(c.id) === String(clienteId));
+        if (!cliente) return;
+        document.getElementById('painel-historico-cliente').style.display = 'block';
+        document.getElementById('nome-historico-cliente').textContent = cliente.nome;
+        const tbody = document.querySelector('#tabela-historico-agendamentos tbody');
+        // Apenas agendamentos FINALIZADOS
+        const ags = agendamentos.filter(a => String(a.clienteId) === String(clienteId) && a.status === 'finalizado');
+        if (ags.length === 0) {
+            tbody.innerHTML = '';
+            document.getElementById('mensagem-sem-historico').style.display = 'block';
+        } else {
+            document.getElementById('mensagem-sem-historico').style.display = 'none';
+            tbody.innerHTML = ags.map(a => {
+                const servico = servicos.find(s => String(s.id) === String(a.servicoId));
+                const barbeiro = barbeiros.find(b => String(b.id) === String(a.barbeiroId));
+                return `<tr>
+                    <td>${formatDate(a.data)}</td>
+                    <td>${a.hora}</td>
+                    <td>${servico ? servico.nome : 'N/A'}</td>
+                    <td>${barbeiro ? barbeiro.nome : 'N/A'}</td>
+                    <td>${a.status}</td>
+                    <td>R$ ${a.valor ? a.valor.toFixed(2) : '0,00'}</td>
+                </tr>`;
+            }).join('');
+        }
     }
 
     function searchClientes() {
@@ -686,13 +795,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const tbody = document.querySelector('#tabela-clientes tbody');
         
         tbody.innerHTML = clientes
-            .filter(cliente => cliente.nome.toLowerCase().includes(termo))
+            .filter(cliente => {
+                return (
+                    (cliente.nome && cliente.nome.toLowerCase().includes(termo)) ||
+                    (cliente.cpf && cliente.cpf.toLowerCase().includes(termo)) ||
+                    (cliente.rg && cliente.rg.toLowerCase().includes(termo))
+                );
+            })
             .map(cliente => {
                 const agendamentosCliente = agendamentos.filter(a => a.clienteId === cliente.id).length;
-                
                 return `
                     <tr>
                         <td>${cliente.nome}</td>
+                        <td>${cliente.cpf || 'N/A'}</td>
+                        <td>${cliente.rg || 'N/A'}</td>
                         <td>${formatPhone(cliente.telefone)}</td>
                         <td>${cliente.email || 'N/A'}</td>
                         <td>${agendamentosCliente}</td>
@@ -739,11 +855,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const tbody = document.querySelector('#tabela-barbeiros tbody');
         
         tbody.innerHTML = barbeiros
-            .filter(barbeiro => barbeiro.nome.toLowerCase().includes(termo))
+            .filter(barbeiro => {
+                return (
+                    (barbeiro.nome && barbeiro.nome.toLowerCase().includes(termo)) ||
+                    (barbeiro.cpf && barbeiro.cpf.toLowerCase().includes(termo)) ||
+                    (barbeiro.rg && barbeiro.rg.toLowerCase().includes(termo))
+                );
+            })
             .map(barbeiro => {
                 return `
                     <tr>
                         <td>${barbeiro.nome}</td>
+                        <td>${barbeiro.cpf || 'N/A'}</td>
+                        <td>${barbeiro.rg || 'N/A'}</td>
                         <td>${formatPhone(barbeiro.telefone)}</td>
                         <td>${barbeiro.email || 'N/A'}</td>
                         <td>${barbeiro.especialidades.join(', ')}</td>
@@ -762,38 +886,66 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function confirmDelete(type, id) {
-        openModal('confirmacao');
-        
+        // Garante que o modal de confirmação aparece
+        const modalContainer = document.getElementById('modal-container');
+        const modalConfirmacao = document.getElementById('modal-confirmacao');
+        if (modalContainer && modalConfirmacao) {
+            modalContainer.style.display = 'flex';
+            modalConfirmacao.style.display = 'block';
+        }
         document.getElementById('modal-confirmacao-titulo').textContent = `Excluir ${type}`;
-        document.getElementById('modal-confirmacao-mensagem').textContent = 
-            `Tem certeza que deseja excluir este ${type}? Esta ação não pode ser desfeita.`;
-        
-        document.getElementById('confirmar-acao').onclick = function() {
+        document.getElementById('modal-confirmacao-mensagem').textContent = `Tem certeza que deseja excluir este ${type}? Esta ação não pode ser desfeita.`;
+
+        // Remove todos os event listeners antigos do botão de confirmar
+        const btnConfirmar = document.getElementById('confirmar-acao');
+        const btnConfirmarClone = btnConfirmar.cloneNode(true);
+        btnConfirmar.parentNode.replaceChild(btnConfirmarClone, btnConfirmar);
+
+        // Remove todos os event listeners antigos do botão de cancelar
+        const btnCancelar = document.getElementById('cancelar-acao');
+        if (btnCancelar) {
+            const btnCancelarClone = btnCancelar.cloneNode(true);
+            btnCancelar.parentNode.replaceChild(btnCancelarClone, btnCancelar);
+            btnCancelarClone.addEventListener('click', function() {
+                if (modalContainer && modalConfirmacao) {
+                    modalContainer.style.display = 'none';
+                    modalConfirmacao.style.display = 'none';
+                }
+            });
+        }
+
+        btnConfirmarClone.addEventListener('click', function() {
+            let atualizou = false;
+            // Garante comparação de id como string
+            const idStr = String(id);
             switch(type) {
                 case 'agendamento':
-                    agendamentos = agendamentos.filter(a => a.id !== id);
+                    agendamentos = agendamentos.filter(a => String(a.id) !== idStr);
+                    atualizou = true;
                     break;
                 case 'cliente':
-                    clientes = clientes.filter(c => c.id !== id);
-                    // Remove agendamentos do cliente
-                    agendamentos = agendamentos.filter(a => a.clienteId !== id);
+                    clientes = clientes.filter(c => String(c.id) !== idStr);
+                    agendamentos = agendamentos.filter(a => String(a.clienteId) !== idStr);
+                    atualizou = true;
                     break;
                 case 'servico':
-                    servicos = servicos.filter(s => s.id !== id);
-                    // Remove agendamentos do serviço
-                    agendamentos = agendamentos.filter(a => a.servicoId !== id);
+                    servicos = servicos.filter(s => String(s.id) !== idStr);
+                    agendamentos = agendamentos.filter(a => String(a.servicoId) !== idStr);
+                    atualizou = true;
                     break;
                 case 'barbeiro':
-                    barbeiros = barbeiros.filter(b => b.id !== id);
-                    // Remove agendamentos do barbeiro
-                    agendamentos = agendamentos.filter(a => a.barbeiroId !== id);
+                    barbeiros = barbeiros.filter(b => String(b.id) !== idStr);
+                    agendamentos = agendamentos.filter(a => String(a.barbeiroId) !== idStr);
+                    atualizou = true;
                     break;
             }
-            
-            saveData();
-            closeAllModals();
-            
-            // Recarrega a seção apropriada
+            if (atualizou) {
+                saveData();
+            }
+            if (modalContainer && modalConfirmacao) {
+                modalContainer.style.display = 'none';
+                modalConfirmacao.style.display = 'none';
+            }
             switch(type) {
                 case 'agendamento':
                     loadAgendamentos();
@@ -809,7 +961,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadBarbeiros();
                     break;
             }
-        };
+        });
     }
 
     function exportRelatorio() {
@@ -843,11 +995,7 @@ document.addEventListener('DOMContentLoaded', function() {
         link.click();
         document.body.removeChild(link);
     }
-      // Substitua a parte de inicialização das variáveis por:
-let cliente = JSON.parse(localStorage.getItem('clientes')) || [];
-let servico = JSON.parse(localStorage.getItem('servicos')) || [];
-let barbeiro = JSON.parse(localStorage.getItem('barbeiros')) || [];
-let agendamento = JSON.parse(localStorage.getItem('agendamentos')) || [];
+      // (Bloco duplicado removido para evitar conflitos e garantir funcionamento correto da exclusão nas tabelas)
 
 // Adicione esta função para validar datas
 function validarDataAgendamento(data, hora) {
