@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRAGAS Barbearia - Serviços</title>
+    <link rel="stylesheet" href="cerviços.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+           <h1><i class="fas fa-cut"></i> GRAGAS Barbearia</h1>
+            <nav>
+                <ul>
+                    <!--dashboard-->
+                   <div class="container-botoes">
+                   <a href="index.html" class="botao-navegacao">
+                     <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                   <!--Agendamentos-->
+                   <a href="agendamentos.html" class="botao-link">
+                    <i class="fas fa-calendar"></i>Agendamentos
+                   </a>
+                   <!--clientes-->
+                    <a href="cliente.html" class="botao-link">
+                     <i class="fas fa-users"></i>Clientes
+                    </a>
+                    <!--Serviços-->
+                    <a href="serviços.html" class="botao-navegacao">
+                     <i class="fas fa-concierge-bell"></i> Serviços
+                    </a>
+                    <!--Barbeiros-->
+                     <a href="barbeiros.html" class="botao-navegacao">
+                      <i class="fas fa-user-tie"></i> Barbeiros
+                     </a>
+                    <!--financeiro-->
+                    <a href="financeiro.html" class="botao-navegacao">
+                     <i class="fas fa-money-bill-wave"></i> Financeiro
+                    </a>
+                    <!--Historico-->
+                    <a href="historico.html" class="botao-navegacao">
+                     <i class="fas fa-history"></i> Historico
+                    </a>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h2>Serviços</h2>
+            
+            <div class="controls">
+                <button id="novo-servico" class="btn-primary"><i class="fas fa-plus"></i> Novo Serviço</button>
+                <div class="search">
+                    <input type="text" id="busca-servico" placeholder="Buscar serviço...">
+                    <button id="btn-busca-servico"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            
+            <table id="tabela-servicos">
+                <thead>
+                    <tr>
+                        <th>Serviço</th>
+                        <th>Duração</th>
+                        <th>Preço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados serão preenchidos dinamicamente -->
+                    <tr>
+                        <td>Corte Social</td>
+                        <td>30 min</td>
+                        <td class="preco">R$ 50,00</td>
+                        <td>
+                            <button class="btn-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn-primary"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Barba Completa</td>
+                        <td>40 min</td>
+                        <td class="preco">R$ 35,00</td>
+                        <td>
+                            <button class="btn-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn-primary"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+
+        <footer>
+            © 2025 GRAGAS Barbearia. Todos os direitos reservados.
+        </footer>
+    </div>
+</body>
+</html>
