@@ -1,0 +1,430 @@
+/* Estilos Globais */
+:root {
+    --primary-color: #8B0000; /* Vermelho escuro */
+    --secondary-color: #000000; /* Preto */
+    --accent-color: #FF0000; /* Vermelho vibrante */
+    --light-color: #F5F5F5; /* Branco suave */
+    --dark-color: #1A1A1A; /* Preto quase puro */
+    --success-color: #228B22; /* Verde floresta */
+    --warning-color: #FF8C00; /* Laranja escuro */
+    --danger-color: #B22222; /* Vermelho fogo */
+    --info-color: #1E90FF; /* Azul dodger */
+    --gray-color: #696969; /* Cinza escuro */
+    --light-gray: #D3D3D3; /* Cinza claro */
+    --white: #FFFFFF; /* Branco puro */
+    --black: #000000; /* Preto puro */
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    --border-radius: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Estilos do Header */
+header {
+    background: linear-gradient(to right, var(--black), var(--primary-color));
+    color: var(--white);
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow);
+    border-bottom: 3px solid var(--accent-color);
+}
+
+header h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+header h1 i {
+    color: var(--accent-color);
+}
+
+nav ul {
+   display: flex;
+    list-style: none;
+    gap: 3rem; /* Valor aumentado */
+    padding: 0;
+    margin: 1rem 0 0 0;
+    justify-content: center; /* Adicione esta linha */
+}
+
+nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem; /* Padding horizontal aumentado */
+    position: relative;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    background-color: rgba(139, 0, 0, 0.2); /* Opcional: destaque visual */
+    border-radius: 4px; /* Opcional: bordas arredondadas */
+}
+
+nav a:hover {
+    color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+nav a.active {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-color);
+    border-radius: 3px 3px 0 0;
+}
+
+/* Estilos do Main */
+main {
+    flex: 1;
+    padding: 2rem;
+    background-color: var(--dark-color);
+}
+
+.section {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary-color);
+}
+
+.section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+h3 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+/* Estilos dos Cards */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card, .resumo-card {
+    background: linear-gradient(to bottom right, #1A1A1A, #2A2A2A);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    border-left: 4px solid var(--primary-color);
+}
+
+.stat-card:hover, .resumo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+}
+
+.stat-card h3, .resumo-card h3 {
+    color: var(--light-gray);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p, .resumo-card p {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--white);
+}
+
+/* Estilos das Tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background-color: rgba(26, 26, 26, 0.8);
+    box-shadow: var(--shadow);
+}
+
+th {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--gray-color);
+    color: var(--light-gray);
+}
+
+tr:hover {
+    background-color: rgba(139, 0, 0, 0.1);
+}
+
+/* Estilos dos Botões */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.8rem;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(139, 0, 0, 0.3);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--white);
+    border: 1px solid var(--primary-color);
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Estilos dos Formulários */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--light-gray);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-color);
+    background-color: var(--dark-color);
+    color: var(--white);
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.3);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Estilos dos Modais */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-container.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal {
+    background-color: var(--dark-color);
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 600px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--primary-color);
+    transform: translateY(-20px);
+    transition: transform 0.3s;
+}
+
+.modal-container.active .modal {
+    transform: translateY(0);
+}
+
+.modal h3 {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    border-bottom: 1px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Estilos do Footer */
+footer {
+    background: linear-gradient(to right, var(--black), var(--primary-color));
+    color: var(--white);
+    padding: 2rem;
+    margin-top: auto;
+    border-top: 3px solid var(--accent-color);
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-col h3 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.footer-col p {
+    margin-bottom: 0.5rem;
+    color: var(--light-gray);
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icons a {
+    color: var(--white);
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: var(--accent-color);
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--light-gray);
+    font-size: 0.9rem;
+}
+
+/* Estilos para inputs e selects */
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="tel"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+    background-color: #2A2A2A;
+    border: 1px solid #3A3A3A;
+    color: var(--white);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+/* Efeitos especiais */
+::selection {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
